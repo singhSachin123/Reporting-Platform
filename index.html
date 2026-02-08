@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Space - Anonymous Workplace Reporting</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #4a90e2;
+            --soft-purple: #7c6eb7;
+            --warm-coral: #ff6b9d;
+            --mint-green: #5cd6c0;
+            --sunshine-yellow: #ffc952;
+            --bg-light: #f8f9fc;
+            --bg-white: #ffffff;
+            --text-dark: #2d3748;
+            --text-gray: #718096;
+            --success-green: #48bb78;
+            --gentle-shadow: rgba(74, 144, 226, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fc 0%, #e8f0fe 100%);
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        /* Soft Background Elements */
+        .bg-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.05;
+            animation: floatGentle 20s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary-blue);
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--warm-coral);
+            top: 50%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+
+        .shape-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--mint-green);
+            bottom: 20%;
+            left: 30%;
+            animation-delay: 6s;
+        }
+
+        @keyframes floatGentle {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px var(--gentle-shadow);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            color: var(--primary-blue) !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--soft-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            margin: 0 1rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-blue) !important;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--warm-coral));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 0;
+            z-index: 1;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #fff5f7, #e8f4ff);
+            color: var(--warm-coral);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 2px solid rgba(255, 107, 157, 0.2);
+        }
+
+        .hero-title {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 4rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--primary-blue), var(--warm-coral));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+        }
+
+        .hero-image {
+            animation: floatImage 4s ease-in-out infinite;
+        }
+
+        @keyframes floatImage {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-illustration {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--soft-purple));
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+            color: white;
+        }
+
+        .cta-button-outline {
+            background: white;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+            margin-left: 1rem;
+        }
+
+        .cta-button-outline:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* Trust Indicators */
+        .trust-section {
+            padding: 60px 0;
+            background: white;
+            margin-top: -50px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px var(--gentle-shadow);
+            position: relative;
+            z-index: 2;
+        }
+
+        .trust-item {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .trust-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, var(--bg-light), white);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary-blue);
+            box-shadow: 0 5px 20px var(--gentle-shadow);
+        }
+
+        .trust-number {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .trust-label {
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #e8f4ff, #fff5f7);
+            color: var(--primary-blue);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .section-description {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+            border: 2px solid transparent;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 45px rgba(74, 144, 226, 0.15);
+            border-color: var(--primary-blue);
+        }
+
+        .feature-icon-wrapper {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--warm-coral));
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .feature-card:nth-child(2) .feature-icon-wrapper {
+            background: linear-gradient(135deg, var(--mint-green), var(--primary-blue));
+        }
+
+        .feature-card:nth-child(3) .feature-icon-wrapper {
+            background: linear-gradient(135deg, var(--warm-coral), var(--sunshine-yellow));
+        }
+
+        .feature-card:nth-child(4) .feature-icon-wrapper {
+            background: linear-gradient(135deg, var(--soft-purple), var(--primary-blue));
+        }
+
+        .feature-card:nth-child(5) .feature-icon-wrapper {
+            background: linear-gradient(135deg, var(--sunshine-yellow), var(--mint-green));
+        }
+
+        .feature-card:nth-child(6) .feature-icon-wrapper {
+            background: linear-gradient(135deg, var(--primary-blue), var(--mint-green));
+        }
+
+        .feature-title {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .feature-description {
+            color: var(--text-gray);
+            line-height: 1.8;
+        }
+
+        /* How It Works */
+        .process-section {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .process-step {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            align-items: flex-start;
+        }
+
+        .step-number-wrapper {
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--warm-coral));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Nunito', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+        }
+
+        .step-line {
+            position: absolute;
+            left: 50%;
+            top: 70px;
+            width: 2px;
+            height: calc(100% + 3rem);
+            background: linear-gradient(180deg, var(--primary-blue), transparent);
+            transform: translateX(-50%);
+        }
+
+        .process-step:last-child .step-line {
+            display: none;
+        }
+
+        .step-content {
+            flex: 1;
+            padding-top: 0.5rem;
+        }
+
+        .step-title {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .step-description {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Report Form */
+        .report-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f8f9fc 0%, #e8f0fe 100%);
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 15px 50px rgba(74, 144, 226, 0.1);
+        }
+
+        .compassion-note {
+            background: linear-gradient(135deg, #fff5f7, #e8f4ff);
+            border-left: 4px solid var(--warm-coral);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .compassion-note i {
+            color: var(--warm-coral);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .form-label {
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .form-control, .form-select {
+            background: var(--bg-light);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            color: var(--text-dark);
+            padding: 12px 20px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: white;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1);
+            color: var(--text-dark);
+        }
+
+        .form-control::placeholder {
+            color: #a0aec0;
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .testimonial-card {
+            background: linear-gradient(135deg, #f8f9fc, white);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-text {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--warm-coral));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .author-info h5 {
+            margin: 0;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .author-info p {
+            margin: 0;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #2d3748, #1a202c);
+            padding: 60px 0 30px;
+            color: white;
+        }
+
+        .footer-title {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--primary-blue);
+            transform: translateY(-3px);
+            color: white;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .cta-button-outline {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+
+            .process-step {
+                flex-direction: column;
+            }
+
+            .step-line {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Soft Background Shapes -->
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <div class="brand-icon">
+                    <i class="fas fa-shield-heart"></i>
+                </div>
+                Safe Space
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#process">How It Works</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#report">Share Your Story</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <span class="hero-badge">
+                            <i class="fas fa-heart me-2"></i>Your voice matters
+                        </span>
+                        <h1 class="hero-title">
+                            Speak Up Safely,<br>
+                            <span class="highlight">We're Here to Listen</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            A safe, anonymous platform where you can report workplace concerns with confidence. Your identity is protected, your voice is heard, and action is taken.
+                        </p>
+                        <div>
+                            <a href="#report" class="cta-button">
+                                <i class="fas fa-comment-dots"></i>
+                                Share Anonymously
+                            </a>
+                            <a href="#process" class="cta-button cta-button-outline">
+                                <i class="fas fa-info-circle"></i>
+                                Learn How
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image text-center">
+                        <svg class="hero-illustration" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Protective Shield -->
+                            <circle cx="250" cy="250" r="180" fill="url(#gradient1)" opacity="0.1"/>
+                            <path d="M250,100 L320,140 L320,240 Q320,300 250,350 Q180,300 180,240 L180,140 Z" 
+                                  fill="url(#gradient2)" stroke="#4a90e2" stroke-width="3"/>
+                            
+                            <!-- Heart in Shield -->
+                            <path d="M250,200 C240,190 220,195 220,210 C220,225 250,250 250,250 C250,250 280,225 280,210 C280,195 260,190 250,200" 
+                                  fill="#ff6b9d"/>
+                            
+                            <!-- People silhouettes -->
+                            <circle cx="210" cy="320" r="25" fill="#5cd6c0" opacity="0.8"/>
+                            <circle cx="250" cy="320" r="25" fill="#7c6eb7" opacity="0.8"/>
+                            <circle cx="290" cy="320" r="25" fill="#ffc952" opacity="0.8"/>
+                            
+                            <!-- Gradients -->
+                            <defs>
+                                <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#7c6eb7;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#e8f4ff;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#ffffff;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="container">
+        <div class="trust-section">
+            <div class="row">
+                <div class="col-md-3 col-6 trust-item reveal">
+                    <div class="trust-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="trust-number">100%</div>
+                    <div class="trust-label">Anonymous</div>
+                </div>
+                <div class="col-md-3 col-6 trust-item reveal">
+                    <div class="trust-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="trust-number">7 Days</div>
+                    <div class="trust-label">Response Time</div>
+                </div>
+                <div class="col-md-3 col-6 trust-item reveal">
+                    <div class="trust-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="trust-number">5-8</div>
+                    <div class="trust-label">Ethics Members</div>
+                </div>
+                <div class="col-md-3 col-6 trust-item reveal">
+                    <div class="trust-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="trust-number">24/7</div>
+                    <div class="trust-label">Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-badge">Why Choose Us</span>
+                <h2 class="section-title">Built on Trust & Compassion</h2>
+                <p class="section-description">
+                    We've designed every feature with your safety, privacy, and wellbeing in mind
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 class="feature-title">Your Identity Stays Private</h3>
+                        <p class="feature-description">
+                            We use advanced encryption to ensure your identity is never revealed. Share your story with complete confidence knowing you're protected.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h3 class="feature-title">Fair & Supportive Review</h3>
+                        <p class="feature-description">
+                            A dedicated ethics committee of 5-8 caring members reviews each case with empathy, ensuring fair decisions through collective evaluation.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="feature-title">Timely Action</h3>
+                        <p class="feature-description">
+                            We know waiting is hard. Every report receives a response within 7 days, so you're not left wondering what's happening.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-file-shield"></i>
+                        </div>
+                        <h3 class="feature-title">Evidence Protection</h3>
+                        <p class="feature-description">
+                            Submit supporting evidence if you have it. We verify through CCTV and records while keeping your identity completely secure.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <h3 class="feature-title">Ethical Excellence</h3>
+                        <p class="feature-description">
+                            Our ethics committee members are rewarded for fair decisions, creating a culture of integrity and accountability.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <h3 class="feature-title">Preventing Misuse</h3>
+                        <p class="feature-description">
+                            Smart monitoring detects patterns and prevents system abuse, ensuring the platform remains a safe space for genuine concerns.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="process" class="process-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-badge">Simple Process</span>
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-description">
+                    We've made it as easy and safe as possible to share your concerns
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="process-step reveal">
+                        <div class="step-number-wrapper">
+                            <div class="step-number">1</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="step-content">
+                            <h3 class="step-title">Access Safely & Anonymously</h3>
+                            <p class="step-description">
+                                Log in using your company credentials. Our system immediately encrypts your identity, ensuring complete anonymity from the very first step.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="process-step reveal">
+                        <div class="step-number-wrapper">
+                            <div class="step-number">2</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="step-content">
+                            <h3 class="step-title">Share Your Experience</h3>
+                            <p class="step-description">
+                                Tell us what happened in your own words. Take your time, and include as much detail as you're comfortable sharing. You can also attach evidence if you have any.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="process-step reveal">
+                        <div class="step-number-wrapper">
+                            <div class="step-number">3</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="step-content">
+                            <h3 class="step-title">Compassionate Review</h3>
+                            <p class="step-description">
+                                Our trained ethics committee carefully reviews your case with empathy and fairness. They may verify details using available records while protecting your identity.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="process-step reveal">
+                        <div class="step-number-wrapper">
+                            <div class="step-number">4</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="step-content">
+                            <h3 class="step-title">Smart Pattern Detection</h3>
+                            <p class="step-description">
+                                Our system monitors for concerning patterns and repeat issues, ensuring serious situations get the urgent attention they deserve.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="process-step reveal">
+                        <div class="step-number-wrapper">
+                            <div class="step-number">5</div>
+                        </div>
+                        <div class="step-content">
+                            <h3 class="step-title">Action & Resolution</h3>
+                            <p class="step-description">
+                                You'll receive a decision within 7 days. Appropriate action is taken to address the situation while your identity remains completely protected throughout.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Report Form Section -->
+    <section id="report" class="report-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-badge">Confidential</span>
+                <h2 class="section-title">Share Your Story</h2>
+                <p class="section-description">
+                    You're not alone. We're here to listen and help.
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="form-container reveal">
+                        <div class="compassion-note">
+                            <i class="fas fa-heart"></i>
+                            <strong>You're doing the right thing.</strong> Speaking up takes courage, and we're here to support you every step of the way. Your information is completely safe with us.
+                        </div>
+
+                        <form id="reportForm">
+                            <div class="mb-4">
+                                <label class="form-label">
+                                    <i class="fas fa-id-badge me-2 text-primary"></i>
+                                    Employee ID (Automatically Encrypted)
+                                </label>
+                                <input type="text" class="form-control" placeholder="Your ID will be kept completely anonymous">
+                                <small class="text-muted">This helps us verify you're an employee without revealing who you are</small>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">
+                                    <i class="fas fa-tag me-2 text-primary"></i>
+                                    What happened?
+                                </label>
+                                <select class="form-select">
+                                    <option selected>Please select...</option>
+                                    <option value="harassment">Workplace Harassment</option>
+                                    <option value="discrimination">Discrimination</option>
+                                    <option value="bullying">Bullying or Intimidation</option>
+                                    <option value="safety">Safety Concerns</option>
+                                    <option value="ethics">Ethical Violations</option>
+                                    <option value="other">Something Else</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">
+                                    <i class="fas fa-calendar me-2 text-primary"></i>
+                                    When did this happen?
+                                </label>
+                                <input type="date" class="form-control">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">
+                                    <i class="fas fa-comment me-2 text-primary"></i>
+                                    Tell us your story
+                                </label>
+                                <textarea class="form-control" rows="6" placeholder="Please share what happened in as much detail as you're comfortable with. Remember, this is a safe space and your identity is protected."></textarea>
+                                <small class="text-muted">Include: What happened, where, who was involved (if you know), and how it affected you</small>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">
+                                    <i class="fas fa-paperclip me-2 text-primary"></i>
+                                    Supporting Evidence (Optional)
+                                </label>
+                                <input type="file" class="form-control" multiple>
+                                <small class="text-muted">You can attach screenshots, emails, or documents if you have them</small>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="truthful">
+                                    <label class="form-check-label" for="truthful">
+                                        I confirm this report is truthful to the best of my knowledge
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="cta-button w-100">
+                                <i class="fas fa-shield-heart me-2"></i>
+                                Submit Anonymously & Securely
+                            </button>
+
+                            <p class="text-center text-muted mt-3 mb-0">
+                                <i class="fas fa-lock me-2"></i>
+                                Your submission is encrypted and completely anonymous
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-badge">Real Stories</span>
+                <h2 class="section-title">You're Not Alone</h2>
+                <p class="section-description">
+                    Hear from others who've used this platform (all anonymous)
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 reveal">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "I was scared to speak up, but this platform made me feel safe. The response was quick and fair, and I finally feel heard."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">A</div>
+                            <div class="author-info">
+                                <h5>Anonymous Employee</h5>
+                                <p>Resolved in 5 days</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 reveal">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "Being able to report anonymously gave me the courage to finally address what was happening. Thank you for creating this safe space."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">B</div>
+                            <div class="author-info">
+                                <h5>Anonymous User</h5>
+                                <p>Grateful for support</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 reveal">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "The ethics committee was fair and understanding. I felt like my concerns were taken seriously and handled professionally."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">C</div>
+                            <div class="author-info">
+                                <h5>Anonymous Reporter</h5>
+                                <p>Positive outcome</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="brand-icon" style="background: linear-gradient(135deg, var(--primary-blue), var(--warm-coral));">
+                            <i class="fas fa-shield-heart"></i>
+                        </div>
+                        <h4 class="footer-title mb-0 ms-3">Safe Space</h4>
+                    </div>
+                    <p style="color: rgba(255, 255, 255, 0.7);">
+                        Empowering workplace safety through compassionate, anonymous reporting and ethical evaluation.
+                    </p>
+                    <div class="social-links mt-3">
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h4 class="footer-title">Platform</h4>
+                    <a href="#features" class="footer-link">Features</a>
+                    <a href="#process" class="footer-link">How It Works</a>
+                    <a href="#report" class="footer-link">Submit Report</a>
+                    <a href="#" class="footer-link">FAQs</a>
+                </div>
+
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h4 class="footer-title">Support</h4>
+                    <a href="#" class="footer-link">Help Center</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Use</a>
+                    <a href="#" class="footer-link">Contact Us</a>
+                </div>
+
+                <div class="col-lg-4 col-md-4 mb-4">
+                    <h4 class="footer-title">Need Help?</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7);">
+                        <i class="fas fa-envelope me-2"></i> support@safespace.com<br>
+                        <i class="fas fa-phone me-2"></i> +91 18000213000-SAFE-TALK<br>
+                        <i class="fas fa-clock me-2"></i> Available 24/7
+                    </p>
+                    <p style="color: rgba(255, 255, 255, 0.5); font-size: 0.9rem;">
+                        Project ID: WS010 | Women Safety <br>
+                        Team:Agemtops| Lead:Satyam raj,Vinath J Shetty,sachin singh , sangamesh S N
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-center mt-4 pt-4" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <p style="color: rgba(255, 255, 255, 0.5); margin: 0;">
+                    © 2026 Safe Space. Making workplaces safer, one voice at a time.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll reveal animation
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 100;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Initial check
+
+        // Form submission with compassionate feedback
+        document.getElementById('reportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const button = this.querySelector('.cta-button');
+            const originalHTML = button.innerHTML;
+            
+            // Show submitting state
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Sending securely...';
+            button.disabled = true;
+            
+            // Simulate submission
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-check-circle me-2"></i> Received! Thank you for your courage';
+                button.style.background = 'linear-gradient(135deg, var(--success-green), var(--mint-green))';
+                
+                // Show success message
+                const successMsg = document.createElement('div');
+                successMsg.className = 'alert alert-success mt-3';
+                successMsg.innerHTML = `
+                    <i class="fas fa-heart me-2"></i>
+                    <strong>Your report has been received safely.</strong><br>
+                    Our ethics committee will review it with care. You'll receive updates anonymously. 
+                    Remember, you're not alone in this.
+                `;
+                this.appendChild(successMsg);
+                
+                // Reset form after delay
+                setTimeout(() => {
+                    this.reset();
+                    button.innerHTML = originalHTML;
+                    button.style.background = '';
+                    button.disabled = false;
+                    successMsg.remove();
+                }, 5000);
+            }, 2000);
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 5px 30px rgba(74, 144, 226, 0.15)';
+            } else {
+                navbar.style.boxShadow = '0 2px 20px var(--gentle-shadow)';
+            }
+        });
+    </script>
+</body>
+</html>
